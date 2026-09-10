@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Youth Compass | 청년 정책을 내게 맞게 찾는 플랫폼</title>
+  <meta name="description" content="Youth Compass는 흩어져 있는 청년 지원 정책을 한곳에 모아, 내게 맞는 혜택과 최신 정보를 빠르게 찾을 수 있게 돕는 맞춤형 정책 플랫폼입니다." />
+  <style>
+    :root {
+      --bg: #f8fbff;
+      --bg-soft: #ffffff;
+      --text: #0f172a;
+      --muted: #5f6d84;
+      --line: #dde7f4;
+      --line-2: #e8eff8;
+      --primary: #2563eb;
+      --primary-2: #7c3aed;
+      --accent: #0f766e;
+      --shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+      --shadow-hover: 0 22px 54px rgba(15, 23, 42, 0.12);
+      --radius: 26px;
+      --radius-sm: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.08), transparent 22%),
+        radial-gradient(circle at 90% 12%, rgba(124, 58, 237, 0.08), transparent 18%),
+        radial-gradient(circle at 50% 0%, rgba(15, 118, 110, 0.06), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(100% - 32px, var(--max)); margin: 0 auto; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(248, 251, 255, 0.84);
+      border-bottom: 1px solid rgba(221, 231, 244, 0.9);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.03em; }
+    .logo {
+      width: 42px; height: 42px; border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff; display: grid; place-items: center; box-shadow: var(--shadow);
+      font-size: 1rem;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .brand:hover .logo { transform: translateY(-2px) rotate(-3deg) scale(1.04); box-shadow: var(--shadow-hover); }
+    .nav-links { display: flex; align-items: center; gap: 24px; color: var(--muted); font-size: 0.95rem; }
+    .nav-links a { transition: color .2s ease, transform .2s ease; }
+    .nav-links a:hover { color: var(--text); transform: translateY(-1px); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 13px 18px; border-radius: 999px; font-weight: 700; transition: 0.25s ease;
+      border: 1px solid transparent; white-space: nowrap;
+      transform: translateY(0);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.01); box-shadow: var(--shadow-hover); }
+    .btn:active { transform: translateY(-1px) scale(0.99); }
+    .btn-primary { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; }
+    .btn-secondary { background: #fff; color: var(--text); border-color: var(--line); }
+    .btn-secondary:hover { background: #fbfdff; border-color: #cfddef; }
+
+    .hero { padding: 70px 0 30px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 30px; align-items: center;
+      min-height: calc(100vh - 100px);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px;
+      background: rgba(37, 99, 235, 0.07); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.12);
+      font-size: 0.92rem; font-weight: 700; margin-bottom: 20px;
+    }
+    .hero h1 {
+      margin: 0; font-size: clamp(2.55rem, 5vw, 4.85rem); line-height: 1.03; letter-spacing: -0.06em; max-width: 14ch;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #0f172a 0%, #2563eb 45%, #7c3aed 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { color: var(--muted); font-size: 1.05rem; line-height: 1.9; max-width: 62ch; margin: 20px 0 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+    .hero-points { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 13px; border-radius: 999px;
+      background: rgba(255,255,255,0.98); border: 1px solid var(--line); color: #334155;
+      font-size: 0.92rem; box-shadow: 0 8px 20px rgba(15,23,42,0.04);
+      transition: 0.25s ease;
+    }
+    .pill:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: #cfddef; }
+
+    .panel {
+      background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: hidden; transition: 0.28s ease;
+    }
+    .panel:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .mockup {
+      padding: 22px;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(37,99,235,0.07), transparent 24%),
+        radial-gradient(circle at 88% 0%, rgba(124,58,237,0.08), transparent 22%),
+        linear-gradient(180deg, #ffffff, #f8fbff);
+    }
+    .mockup-top {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+      color: var(--muted); font-size: 0.92rem;
+    }
+    .search-shell {
+      padding: 18px; border-radius: 22px; background: #fff; border: 1px solid #e8eef7; margin-bottom: 14px;
+      transition: 0.25s ease;
+    }
+    .search-shell:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .search-title { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; }
+    .search-bar {
+      display: flex; align-items: center; gap: 12px; padding: 14px 15px;
+      border-radius: 18px; background: #f8fbff; border: 1px solid #dbe4f0;
+      transition: 0.22s ease;
+    }
+    .search-bar:hover { border-color: #bfd0ea; box-shadow: 0 10px 24px rgba(37,99,235,0.06); }
+    .search-input { flex: 1; color: #0f172a; font-weight: 600; line-height: 1.55; }
+    .search-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 11px; border-radius: 999px;
+      background: #fff; border: 1px solid #e5edf7; color: #334155; font-size: 0.86rem;
+      transition: 0.22s ease;
+    }
+    .chip:hover { transform: translateY(-2px); border-color: #c7d7ee; box-shadow: 0 10px 20px rgba(15,23,42,0.04); }
+
+    .results-layout { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 14px; margin-top: 14px; }
+    .results-card, .side-card {
+      background: #fff; border: 1px solid #e5edf7; border-radius: 20px; padding: 16px;
+      transition: 0.25s ease;
+    }
+    .results-card:hover, .side-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .results-card h3, .side-card h3 { margin: 0 0 10px; font-size: 0.98rem; }
+    .result-item {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+      padding: 12px 0; border-top: 1px solid #edf2f7; transition: 0.2s ease;
+    }
+    .result-item:first-of-type { border-top: 0; padding-top: 0; }
+    .result-item:hover { transform: translateX(2px); }
+    .result-ico {
+      width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(124,58,237,0.12));
+      border: 1px solid #dbe6f3;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .result-item:hover .result-ico { transform: scale(1.08) rotate(-4deg); box-shadow: 0 10px 22px rgba(37,99,235,0.08); }
+    .result-title { font-weight: 700; margin-bottom: 4px; }
+    .result-meta { color: var(--muted); font-size: 0.85rem; line-height: 1.55; }
+    .badge {
+      display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px;
+      background: rgba(34,197,94,0.12); color: #15803d; font-size: 0.82rem; font-weight: 700;
+      border: 1px solid rgba(34,197,94,0.16);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .badge:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 10px 20px rgba(21, 128, 61, 0.10); }
+    .side-card .stat { display: grid; gap: 10px; }
+    .stat-box {
+      padding: 12px; border-radius: 16px; background: #f8fbff; border: 1px solid #e5edf7;
+      transition: 0.22s ease;
+    }
+    .stat-box:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15,23,42,0.05); }
+    .stat-box strong { display: block; margin-bottom: 4px; }
+    .stat-box span { color: var(--muted); font-size: 0.85rem; line-height: 1.55; }
+
+    .section { padding: 56px 0; }
+    .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 24px; flex-wrap: wrap; }
+    .section h2 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -0.04em; line-height: 1.1; }
+    .section-desc { color: var(--muted); max-width: 70ch; line-height: 1.85; margin: 0; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature {
+      padding: 26px; border-radius: var(--radius-sm); background: #fff; border: 1px solid #e5edf7;
+      box-shadow: 0 10px 28px rgba(15,23,42,0.04);
+      min-height: 260px; transition: 0.28s ease;
+      position: relative; overflow: hidden;
+    }
+    .feature:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #d0ddef; }
+    .feature::after {
+      content: ""; position: absolute; inset: auto -18% -34% auto; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(37,99,235,0.09), transparent 66%);
+      pointer-events: none;
+    }
+    .icon {
+      width: 74px; height: 74px; border-radius: 24px; display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(124,58,237,0.14));
+      border: 1px solid #dbe6f3; font-size: 1.8rem; margin-bottom: 10px;
+      box-shadow: 0 14px 30px rgba(37,99,235,0.09);
+      transition: 0.24s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .feature:hover .icon { transform: translateY(-3px) rotate(-4deg) scale(1.06); }
+    .icon-desc {
+      display: inline-flex; margin-bottom: 12px; color: var(--muted); font-size: 0.86rem; line-height: 1.5;
+    }
+    .feature h3 { margin: 0 0 10px; font-size: 1.1rem; letter-spacing: -0.02em; }
+    .feature p, .feature li { color: var(--muted); line-height: 1.75; font-size: 0.96rem; }
+    .feature ul { margin: 14px 0 0; padding-left: 18px; }
+
+    .pricing-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18px; align-items: stretch; }
+    .pricing-card {
+      padding: 28px; border-radius: var(--radius); background: #fff; border: 1px solid #e5edf7; box-shadow: var(--shadow);
+      transition: 0.28s ease;
+    }
+    .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .price-badge {
+      display: inline-flex; padding: 8px 12px; border-radius: 999px; background: rgba(34,197,94,0.12); color: #15803d;
+      border: 1px solid rgba(34,197,94,0.16); margin-bottom: 18px; font-size: 0.9rem; font-weight: 800;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .price-badge:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 20px rgba(21,128,61,0.10); }
+    .price { display: flex; align-items: baseline; gap: 10px; margin: 10px 0 18px; }
+    .price strong { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.05em; }
+    .price span { color: var(--muted); }
+    .pricing-list { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.9; }
+
+    .metric { display: grid; gap: 14px; }
+    .metric-item {
+      padding: 20px; border-radius: 18px; background: #fff; border: 1px solid #e5edf7;
+      transition: 0.24s ease;
+    }
+    .metric-item:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(15,23,42,0.08); }
+    .metric-item strong { display: block; font-size: 1.1rem; margin-bottom: 6px; }
+    .metric-item p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .cta-banner {
+      margin: 56px 0 24px; padding: 30px; border-radius: 28px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
+      border: 1px solid #dbe6f3;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+      transition: 0.28s ease;
+    }
+    .cta-banner:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .cta-banner h3 { margin: 0 0 8px; font-size: 1.42rem; letter-spacing: -0.03em; }
+    .cta-banner p { margin: 0; color: var(--muted); line-height: 1.75; }
+
+    .footer { padding: 24px 0 42px; color: var(--muted); font-size: 0.92rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid #dce6f3; padding-top: 18px; }
+
+    @media (max-width: 960px) {
+      .hero-grid, .pricing-grid, .feature-grid, .results-layout { grid-template-columns: 1fr; }
+      .hero { padding-top: 36px; }
+      .hero-grid { min-height: auto; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .container { width: min(100% - 24px, var(--max)); }
+      .hero h1 { font-size: 2.35rem; }
+      .btn { width: 100%; }
+      .hero-actions { flex-direction: column; }
+      .cta-banner { padding: 22px; }
+      .result-item { grid-template-columns: auto 1fr; }
+      .result-item .badge { grid-column: 2; justify-self: start; }
+      .feature .icon { width: 74px; height: 74px; font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Youth Compass 홈으로">
+        <div class="logo">YC</div>
+        <div>Youth Compass</div>
+      </a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="#features">핵심 기능</a>
+        <a href="#value">가치</a>
+        <a href="#pricing">수익모델</a>
+        <a href="#cta">시작하기</a>
+      </nav>
+      <a class="btn btn-secondary" href="#cta">데모 요청</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">🧭 Youth Compass · 청년 정책을 찾는 가장 빠른 방법</div>
+          <h1 class="gradient-text">흩어진 청년 지원 정책을 내게 맞게 찾아주는 맞춤형 정책 플랫폼입니다.</h1>
+          <p>
+            Youth Compass는 장학금, 취업 지원 사업, 청년수당, 주거 지원처럼 곳곳에 흩어진 청년 정책을
+            한곳에 모아, 조건에 맞는 혜택을 빠르게 찾고 최신 공고까지 놓치지 않도록 돕는 스마트한 맞춤형 정책 플랫폼입니다.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#cta">무료로 시작하기 →</a>
+            <a class="btn btn-secondary" href="#features">핵심 기능 보기</a>
+          </div>
+          <div class="hero-points">
+            <span class="pill">🔎 맞춤 정책 탐색</span>
+            <span class="pill">⚡ 최신 공고 실시간 반영</span>
+            <span class="pill">💬 자유게시판 커뮤니티</span>
+          </div>
+        </div>
+
+        <div class="panel mockup" aria-label="서비스 미리보기">
+          <div class="mockup-top">
+            <span>📌 Product UI Preview</span>
+            <span>Updated just now</span>
+          </div>
+
+          <div class="search-shell">
+            <div class="search-title">🔍 청년 정책 검색</div>
+            <div class="search-bar">
+              <div class="search-input">대학생 · 취업준비생 · 월세 지원 · 청년수당</div>
+              <a class="btn btn-primary" href="#cta" style="padding:10px 16px; font-size:0.9rem;">검색</a>
+            </div>
+            <div class="search-chip-row">
+              <span class="chip"># 서울</span>
+              <span class="chip"># 대학생</span>
+              <span class="chip"># 취업준비</span>
+              <span class="chip"># 장학금</span>
+              <span class="chip"># 주거지원</span>
+            </div>
+          </div>
+
+          <div class="results-layout">
+            <div class="results-card">
+              <h3>🎯 추천 결과 미리보기</h3>
+              <div class="result-item">
+                <div class="result-ico">🎓</div>
+                <div>
+                  <div class="result-title">대학생 학업 지원 장학금</div>
+                  <div class="result-meta">등록 마감까지 6일 · 성적/소득 요건 확인 · 서류 제출 필요</div>
+                </div>
+                <span class="badge">추천</span>
+              </div>
+              <div class="result-item">
+                <div class="result-ico">💼</div>
+                <div>
+                  <div class="result-title">청년 취업준비 지원 프로그램</div>
+                  <div class="result-meta">이력서·면접 교육 포함 · 지역별 신청 가능 · 선착순 접수</div>
+                </div>
+                <span class="badge">신규</span>
+              </div>
+              <div class="result-item">
+                <div class="result-ico">🏠</div>
+                <div>
+                  <div class="result-title">청년 주거비 지원 사업</div>
+                  <div class="result-meta">월세 보조 · 거주지 기준 확인 · 외부 신청 페이지 연결</div>
+                </div>
+                <span class="badge">인기</span>
+              </div>
+            </div>
+            <div class="side-card">
+              <h3>📊 빠른 상태 정보</h3>
+              <div class="stat">
+                <div class="stat-box">
+                  <strong>내 조건에 맞는 정책</strong>
+                  <span>연령, 지역, 상황별 자동 필터링으로 결과를 압축합니다.</span>
+                </div>
+                <div class="stat-box">
+                  <strong>신청 가능성 높은 순 정렬</strong>
+                  <span>복잡한 정책을 우선순위로 정리해 선택을 쉽게 만듭니다.</span>
+                </div>
+                <div class="stat-box">
+                  <strong>자료·파일·링크 연계</strong>
+                  <span>공고문, 첨부 파일, 외부 신청 링크를 하나의 흐름으로 연결합니다.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="value">
+      <div class="container">
+        <div class="section-head">
+          <div><h2>우리 서비스가 추구하는 목표와 가치</h2></div>
+          <p class="section-desc">
+            정보 부족 때문에 혜택을 놓치는 청년을 줄이고, 필요한 지원이 실제 신청으로 연결되도록 돕는 것이 Youth Compass의 핵심 가치입니다.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="icon">🧭</div>
+            <div class="icon-desc">짧게 안내 · 필요한 정책으로 바로 연결</div>
+            <h3>정책 길찾기</h3>
+            <p>복잡한 청년 정책을 쉽고 빠르게 이해하고, 지금 신청 가능한 지원만 선별해 보여줍니다.</p>
+            <ul>
+              <li>연령·지역·상황별 탐색</li>
+              <li>장학금·취업·주거 통합</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <div class="icon">⚡</div>
+            <div class="icon-desc">빠르게 반영 · 최신 정보 유지</div>
+            <h3>최신성 확보</h3>
+            <p>신규 공고와 마감 임박 정책, 변경 사항을 빠르게 반영해 정보의 신뢰도를 높입니다.</p>
+            <ul>
+              <li>신규 정책 자동 수집</li>
+              <li>마감·변경 알림</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <div class="icon">🤝</div>
+            <div class="icon-desc">경험 공유 · 함께 보는 커뮤니티</div>
+            <h3>정보 공유 커뮤니티</h3>
+            <p>자유게시판을 통해 신청 경험, 팁, 질문과 답변을 공유하며 정보 사각지대를 줄입니다.</p>
+            <ul>
+              <li>경험 공유 및 Q&amp;A</li>
+              <li>신청 노하우 축적</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <div><h2>핵심 기능 3개</h2></div>
+          <p class="section-desc">실제 서비스처럼 기능이 보이도록 구성해, 정책 탐색 → 확인 → 참여 흐름이 자연스럽게 이어지도록 했습니다.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="icon" style="width:88px;height:88px;font-size:2.15rem;">1</div>
+            <div class="icon-desc">검색 아이콘 · 맞춤 정책을 바로 찾기</div>
+            <h3>내게 맞는 정책 검색 & 추천</h3>
+            <p>키워드, 연령, 상황, 관심 분야를 기반으로 청년이 받을 수 있는 정책과 혜택을 탐색하고 추천합니다.</p>
+            <ul>
+              <li>조건 필터링</li>
+              <li>관심사 기반 개인화</li>
+              <li>정책 상세 요약</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <div class="icon" style="width:88px;height:88px;font-size:2.15rem;">2</div>
+            <div class="icon-desc">연결 아이콘 · 외부 정보와 바로 이어짐</div>
+            <h3>최신 정보 수집 & 외부 연계</h3>
+            <p>공식 사이트로 바로 이동하고, 사진·파일·안내문 자료도 함께 확인해 신청 준비를 쉽게 만듭니다.</p>
+            <ul>
+              <li>외부 사이트 바로가기</li>
+              <li>이미지 / 파일 자료 연동</li>
+              <li>최신 공고 자동 반영</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <div class="icon" style="width:88px;height:88px;font-size:2.15rem;">3</div>
+            <div class="icon-desc">대화 아이콘 · 정보 나눔 공간</div>
+            <h3>자유게시판 커뮤니티</h3>
+            <p>청년들이 정책 경험과 팁, 후기, 질문을 서로 나누는 소통 공간으로 참여도를 높입니다.</p>
+            <ul>
+              <li>후기 및 Q&amp;A</li>
+              <li>정책 신청 팁 공유</li>
+              <li>커뮤니티 활성화</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <div><h2>월정액 기반 수익모델</h2></div>
+          <p class="section-desc">기본 기능은 쉽게 경험하고, 더 정교한 맞춤 기능은 구독으로 제공하는 구조입니다.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="price-badge">월정액 구독 모델</div>
+            <h3 style="margin:0; font-size:1.42rem; letter-spacing:-0.03em;">프리미엄 청년 정책 탐색 플랜</h3>
+            <div class="price">
+              <strong>₩4,900</strong>
+              <span>/ 월</span>
+            </div>
+            <p style="color:var(--muted); line-height:1.8; margin-top:0;">
+              무료 사용자도 기본 정책 검색과 일부 게시판 열람이 가능하며, 프리미엄 구독자는 더 깊은 추천과 알림을 받을 수 있습니다.
+            </p>
+            <ul class="pricing-list">
+              <li>맞춤 정책 추천 무제한</li>
+              <li>마감 임박 정책 알림</li>
+              <li>지역·소득·상황별 고급 필터</li>
+              <li>자료실 우선 열람 및 저장</li>
+              <li>자유게시판 고급 기능 이용</li>
+            </ul>
+          </div>
+
+          <div class="metric">
+            <div class="metric-item">
+              <strong>무료 체험 → 유료 전환</strong>
+              <p>가벼운 시작 후 가치가 체감되면 자연스럽게 월정액 구독으로 전환하는 구조입니다.</p>
+            </div>
+            <div class="metric-item">
+              <strong>제휴 및 외부 연결</strong>
+              <p>정부·지자체·학교·민간기관의 신청 페이지와 연결해 접근성과 활용도를 높입니다.</p>
+            </div>
+            <div class="metric-item">
+              <strong>커뮤니티 활성화 수익</strong>
+              <p>후기, 자료, 공지, 공모전 정보 등으로 재방문을 유도하고 서비스 체류 시간을 늘립니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="cta-banner" id="cta">
+        <div>
+          <h3>청년이 놓치기 쉬운 혜택, Youth Compass가 먼저 찾아드립니다.</h3>
+          <p>지금 바로 시작해서 맞춤 정책 추천, 최신 알림, 자유게시판 커뮤니티를 경험해 보세요.</p>
+        </div>
+        <div class="hero-actions" style="margin:0;">
+          <a class="btn btn-primary" href="#top">지금 시작하기</a>
+          <a class="btn btn-secondary" href="#pricing">요금제 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2026 Youth Compass. 청년 정책을 더 쉽고, 더 정확하게.</div>
+      <div>Landing Page Prototype for Startup Class Project</div>
+    </div>
+  </footer>
+</body>
+</html>
